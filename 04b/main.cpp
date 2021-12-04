@@ -29,7 +29,6 @@ struct Board {
     for (auto &board_n : numbers) {
       if (board_n.val == n) {
         board_n.is_marked = true;
-        std::cout << "marked: " << board_n.val << " for board:\n" << *this << std::endl;
         return true;
       }
     }
@@ -143,16 +142,8 @@ int main() {
       input.boards.erase(std::remove_if(input.boards.begin(),
                                         input.boards.end(),
                                         [=](auto &board) {
-                                          const bool is_board_marked =
-                                              board.mark_if_present(drawn_n);
-
-                                          if (is_board_marked && board.has_full_column_or_row()) {
-                                            std::cout << "winning board (removing):"
-                                                      << "\n"
-                                                      << board << std::endl;
-                                            return true;
-                                          }
-                                          return false;
+                                          return (board.mark_if_present(drawn_n) &&
+                                                  board.has_full_column_or_row());
                                         }),
                          input.boards.end());
     } else { // we are on the last board, stop removing
